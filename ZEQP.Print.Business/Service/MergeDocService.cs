@@ -11,7 +11,6 @@ using ZEQP.Print.Models;
 using ZXing;
 using ZXing.Common;
 using ZXing.QrCode;
-using ZXing.SkiaSharp;
 using System.Collections.Concurrent;
 using System.Linq;
 
@@ -45,12 +44,10 @@ namespace ZEQP.Print.Business
             callback.SetPrintModel(model);
 
             doc.MailMerge.FieldMergingCallback = callback;
+            var fieldNames=model.FieldCotent.Keys.Concat(model.ImageContent.Keys).ToArray();
+            var fieldValues=model.FieldCotent.Values.Concat(model.ImageContent.Values.Select(s => "Logo.jpg")).ToArray();
             if (model.FieldCotent.Count > 0)
-                doc.MailMerge.Execute(model.FieldCotent.Keys.ToArray(), model.FieldCotent.Values.ToArray());
-            if (model.ImageContent.Count > 0)
-            {
-                doc.MailMerge.Execute(model.ImageContent.Keys.ToArray(), model.ImageContent.Values.Select(s => s.Value).ToArray());
-            };
+                doc.MailMerge.Execute(fieldNames, fieldValues);
             if (model.TableContent.Count > 0)
             {
                 foreach (var item in model.TableContent)

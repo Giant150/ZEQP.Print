@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Aspose.Words" Version="20.1.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.0" />
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="3.1.0" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.0" />
@@ -22,14 +23,17 @@
     <Folder Include="wwwroot\download\" />
   </ItemGroup>
 
-  <ItemGroup>
+  <!-- <ItemGroup>
     <Reference Include="Aspose.Words">
       <HintPath>D:\OneDrive\Dotnet\Aspose\NET Core\Aspose.Words.dll</HintPath>
     </Reference>
-  </ItemGroup>
+  </ItemGroup> -->
 
   <ItemGroup>
     <Content Update="wwwroot\template\Test.docx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Logo.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
