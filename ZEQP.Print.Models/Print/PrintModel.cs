@@ -62,14 +62,6 @@ namespace ZEQP.Print.Models
     public enum ImageType
     {
         /// <summary>
-        /// 本地图片
-        /// </summary>
-        Local,
-        /// <summary>
-        /// 网络图片
-        /// </summary>
-        Network,
-        /// <summary>
         /// 条形码
         /// </summary>
         BarCode,
