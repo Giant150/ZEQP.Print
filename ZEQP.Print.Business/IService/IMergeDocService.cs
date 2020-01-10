@@ -6,7 +6,7 @@ using ZEQP.Print.Models;
 
 namespace ZEQP.Print.Business
 {
-    public interface IMergeDocService
+    public interface IMergeDocService : IDisposable
     {
         /// <summary>
         /// 合并文档

@@ -14,7 +14,7 @@ namespace ZEQP.Print.Business
         private IPrintModelService PrintSvc { get; set; }
         private IMergeDocService MergeSvc { get; set; }
         public IHostEnvironment HostEnv { get; set; }
-        public PrintService(IMergeDocService mergeSvc,IHostEnvironment hostEnv)
+        public PrintService(IMergeDocService mergeSvc, IHostEnvironment hostEnv)
         {
             this.MergeSvc = mergeSvc;
             this.HostEnv = hostEnv;
@@ -26,7 +26,7 @@ namespace ZEQP.Print.Business
             {
                 var dirPath = $"{this.HostEnv.ContentRootPath}\\wwwroot\\download\\{DateTime.Now.ToString("yyyyMMdd")}";
                 if (!System.IO.Directory.Exists(dirPath)) System.IO.Directory.CreateDirectory(dirPath);
-                var fileName = $"{DateTime.Now.ToString("yyyyMMddHHmmssfff")}_{model.Template}";
+                var fileName = $"{DateTime.Now.ToString("yyyyMMddHHmmssfff")}.xps";
                 var filePath = $"{dirPath}\\{fileName}";
                 using (var fileStream = new FileStream(filePath, FileMode.Create))
                 {
@@ -34,15 +34,23 @@ namespace ZEQP.Print.Business
                     fileStream.Close();
                 }
                 if (model.Action == PrintActionType.PrintAndFile)
-                { 
-
+                {
+                    for (int i = 0; i < model.Copies; i++)
+                    {
+                        XpsPrintHelper.Print(xpsStream, model.PrintName, Guid.NewGuid().ToString("N"), model.IsWait);
+                    }
                 }
-                return new ComResult() { Code = "0", Msg = "操作成功", Data = filePath.Replace($"{this.HostEnv.ContentRootPath}\\wwwroot", ""), Success = true };
+                var url = filePath.Replace($"{this.HostEnv.ContentRootPath}\\wwwroot", "").Replace("\\", "/");
+                return new ComResult() { Code = "0", Msg = "操作成功", Data = url, Success = true };
             }
-
-            XpsPrintHelper.Print(xpsStream, model.PrintName, Guid.NewGuid().ToString("N"), model.IsWait);
-
-            return new ComResult();
+            else
+            {
+                for (int i = 0; i < model.Copies; i++)
+                {
+                    XpsPrintHelper.Print(xpsStream, model.PrintName, Guid.NewGuid().ToString("N"), model.IsWait);
+                }
+                return new ComResult() { Code = "0", Msg = "操作成功", Data = model.ToJson(), Success = true };
+            }
         }
     }
 }

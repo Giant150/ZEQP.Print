@@ -17,26 +17,31 @@ using System.Linq;
 
 namespace ZEQP.Print.Business
 {
-    public class MergeDocService : IMergeDocService
+    public class MergeDocService : IMergeDocService, IDisposable
     {
         private IServiceProvider SvcProvider { get; set; }
         private IHostEnvironment HostEnv { get; set; }
-        private ConcurrentDictionary<string,Document> DicDoc { get; set; }
+        private ConcurrentDictionary<string,FileStream> DicDoc { get; set; }
         public MergeDocService(IServiceProvider svcProvider, IHostEnvironment hostEnv)
         {
+            this.DicDoc = new ConcurrentDictionary<string, FileStream>();
             this.SvcProvider = svcProvider;
             this.HostEnv = hostEnv;
         }
         public MemoryStream Merge(PrintModel model)
         {
-            Document doc = this.DicDoc.GetOrAdd(model.Template, (template) =>
+            FileStream tempStream = this.DicDoc.GetOrAdd(model.Template, (template) =>
             {
-                var tempPath = $"{this.HostEnv}\\wwwroot\\template\\{template}";
+                var tempPath = $"{this.HostEnv.ContentRootPath}\\wwwroot\\template\\{template}";
                 if (!System.IO.File.Exists(tempPath)) throw new Exception($"{template}模板文件不存在");
-                return new Document(tempPath);
+                return File.OpenRead(tempPath);
             });
-            
-            var callback = this.SvcProvider.GetRequiredService<IPrintFieldMergingCallback>();
+            var doc = new Document(tempStream);
+            IPrintFieldMergingCallback callback;
+            using (var scope= this.SvcProvider.CreateScope())
+            {
+                callback = scope.ServiceProvider.GetRequiredService<IPrintFieldMergingCallback>();
+            } 
             callback.SetPrintModel(model);
 
             doc.MailMerge.FieldMergingCallback = callback;
@@ -60,6 +65,15 @@ namespace ZEQP.Print.Business
             var ms = new MemoryStream();
             doc.Save(ms, SaveFormat.Xps);
             return ms;
+        }
+
+        public void Dispose()
+        {
+            foreach (var item in this.DicDoc)
+            {
+                item.Value.Close();
+                item.Value.Dispose();
+            }
         }
     }
 }

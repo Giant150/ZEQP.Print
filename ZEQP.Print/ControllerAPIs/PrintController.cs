@@ -13,20 +13,26 @@ namespace ZEQP.Print.ControllerAPIs
     [ApiController]
     public class PrintController : ControllerBase
     {
-        public IPrintModelService PrintSvc { get; set; }
-        public IMergeDocService MergeSvc { get; set; }
-        public PrintController(IPrintModelService printSvc,IMergeDocService mergeSvc)
+        public IPrintModelService ModelSvc { get; set; }
+        public IPrintService PrintSvc { get; set; }
+        public PrintController(IPrintModelService modelSvc, IPrintService printSvc)
             : base()
         {
             this.PrintSvc = printSvc;
-            this.MergeSvc = mergeSvc;
+            this.ModelSvc = modelSvc;
         }
-        [HttpPost("[Action]")]
-        public async Task<ActionResult<PrintModel>> Print()
+        [HttpPost]
+        public async Task<ActionResult<ComResult>> Post()
         {
-            var model = await this.PrintSvc.GetPrintModel();
-            var xpsStream = this.MergeSvc.Merge(model);
-
+            var model = await this.ModelSvc.GetPrintModel();
+            var result = this.PrintSvc.Print(model);
+            return result;
+        }
+        [HttpGet]
+        public async Task<ActionResult<ComResult>> Get()
+        {
+            var model = await this.ModelSvc.GetPrintModel();
+            var result = this.PrintSvc.Print(model);
             return result;
         }
     }
