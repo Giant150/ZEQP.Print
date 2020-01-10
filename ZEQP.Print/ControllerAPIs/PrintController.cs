@@ -14,15 +14,19 @@ namespace ZEQP.Print.ControllerAPIs
     public class PrintController : ControllerBase
     {
         public IPrintModelService PrintSvc { get; set; }
-        public PrintController(IPrintModelService printSvc)
+        public IMergeDocService MergeSvc { get; set; }
+        public PrintController(IPrintModelService printSvc,IMergeDocService mergeSvc)
             : base()
         {
             this.PrintSvc = printSvc;
+            this.MergeSvc = mergeSvc;
         }
         [HttpPost("[Action]")]
         public async Task<ActionResult<PrintModel>> Print()
         {
-            var result = await this.PrintSvc.GetPrintModel();
+            var model = await this.PrintSvc.GetPrintModel();
+            var xpsStream = this.MergeSvc.Merge(model);
+
             return result;
         }
     }

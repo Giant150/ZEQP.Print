@@ -27,7 +27,7 @@ namespace ZEQP.Print.Business
             this.SvcProvider = svcProvider;
             this.HostEnv = hostEnv;
         }
-        public Stream Merge(PrintModel model)
+        public MemoryStream Merge(PrintModel model)
         {
             Document doc = this.DicDoc.GetOrAdd(model.Template, (template) =>
             {
@@ -40,7 +40,6 @@ namespace ZEQP.Print.Business
             callback.SetPrintModel(model);
 
             doc.MailMerge.FieldMergingCallback = callback;
-
             if (model.FieldCotent.Count > 0)
                 doc.MailMerge.Execute(model.FieldCotent.Keys.ToArray(), model.FieldCotent.Values.ToArray());
             if (model.ImageContent.Count > 0)

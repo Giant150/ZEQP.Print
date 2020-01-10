@@ -13,6 +13,6 @@ namespace ZEQP.Print.Business
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        Stream Merge(PrintModel model);
+        MemoryStream Merge(PrintModel model);
     }
 }
