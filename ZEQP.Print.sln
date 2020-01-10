@@ -5,11 +5,16 @@ VisualStudioVersion = 16.0.29609.76
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZEQP.Print", "ZEQP.Print\ZEQP.Print.csproj", "{68DB5EAD-C934-42DE-B56F-F28CC5F2DE99}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZEQP.Print.Models", "ZEQP.Print.Models\ZEQP.Print.Models.csproj", "{6AECF6F4-7C61-4559-AEBA-8E1A4F929904}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZEQP.Print.Models", "ZEQP.Print.Models\ZEQP.Print.Models.csproj", "{6AECF6F4-7C61-4559-AEBA-8E1A4F929904}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZEQP.Print.Framework", "ZEQP.Print.Framework\ZEQP.Print.Framework.csproj", "{223E65DE-DE23-4B41-94EF-E0048BCB9FDB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZEQP.Print.Framework", "ZEQP.Print.Framework\ZEQP.Print.Framework.csproj", "{223E65DE-DE23-4B41-94EF-E0048BCB9FDB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZEQP.Print.Business", "ZEQP.Print.Business\ZEQP.Print.Business.csproj", "{17CB1D0C-75F9-4B5A-A44D-FE9506162367}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZEQP.Print.Business", "ZEQP.Print.Business\ZEQP.Print.Business.csproj", "{17CB1D0C-75F9-4B5A-A44D-FE9506162367}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{2857EF54-4B0B-4354-937C-8BE0502E201D}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
