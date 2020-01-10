@@ -26,6 +26,9 @@ namespace ZEQP.Print
         {
 
             services.AddScoped<IPrintModelService, PrintModelService>();
+            services.AddScoped<IPrintFieldMergingCallback, PrintFieldMergingCallback>();
+            services.AddSingleton<IMergeDocService, MergeDocService>();
+
             services.AddHttpContextAccessor();
             services.AddControllersWithViews()
                 .AddNewtonsoftJson(option =>
