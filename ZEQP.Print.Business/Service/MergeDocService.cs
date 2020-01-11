@@ -45,7 +45,7 @@ namespace ZEQP.Print.Business
 
             doc.MailMerge.FieldMergingCallback = callback;
             var fieldNames=model.FieldCotent.Keys.Concat(model.ImageContent.Keys).ToArray();
-            var fieldValues=model.FieldCotent.Values.Concat(model.ImageContent.Values.Select(s => "Logo.jpg")).ToArray();
+            var fieldValues=model.FieldCotent.Values.Concat(model.ImageContent.Values.Select(s => s.Value)).ToArray();
             if (model.FieldCotent.Count > 0)
                 doc.MailMerge.Execute(fieldNames, fieldValues);
             if (model.TableContent.Count > 0)

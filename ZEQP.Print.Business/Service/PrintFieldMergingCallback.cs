@@ -4,10 +4,12 @@ using System.IO;
 using System.Text;
 using Aspose.Words.Fields;
 using Aspose.Words.MailMerging;
+using SkiaSharp;
 using ZEQP.Print.Models;
 using ZXing;
 using ZXing.Common;
 using ZXing.QrCode;
+using ZXing.SkiaSharp;
 
 namespace ZEQP.Print.Business {
     public class PrintFieldMergingCallback : IPrintFieldMergingCallback {
@@ -25,7 +27,7 @@ namespace ZEQP.Print.Business {
             switch (imageModel.Type) {
                 case ImageType.BarCode:
                     {
-                        var barImage = this.GenerateImage (BarcodeFormat.CODE_128, imageModel.Value, imageModel.Width, imageModel.Height);
+                        var barImage = this.GenerateImageBySkiaSharp (BarcodeFormat.CODE_128, imageModel.Value, imageModel.Width, imageModel.Height);
                         field.ImageStream=barImage;
                         field.ImageWidth.Value = imageModel.Width;
                         field.ImageHeight.Value = imageModel.Height;
@@ -33,7 +35,7 @@ namespace ZEQP.Print.Business {
                     break;
                 case ImageType.QRCode:
                     {
-                        var qrImage = this.GenerateImage (BarcodeFormat.QR_CODE, imageModel.Value, imageModel.Width, imageModel.Height);
+                        var qrImage = this.GenerateImageBySkiaSharp (BarcodeFormat.QR_CODE, imageModel.Value, imageModel.Width, imageModel.Height);
                         field.ImageStream = qrImage;
                         field.ImageWidth.Value = imageModel.Width;
                         field.ImageHeight.Value = imageModel.Height;
@@ -43,8 +45,9 @@ namespace ZEQP.Print.Business {
                     break;
             }
         }
-        private MemoryStream GenerateImage (BarcodeFormat format, string code, int width, int height) {
-            var writer = new BarcodeWriterPixelData ();
+        private MemoryStream GenerateImageBySkiaSharp(BarcodeFormat format, string code, int width, int height)
+        {
+            var writer = new BarcodeWriter();
             writer.Format = format;
             EncodingOptions options = new EncodingOptions () {
                 Width = width,
@@ -63,18 +66,14 @@ namespace ZEQP.Print.Business {
                 };
                 writer.Options = qrOption;
             }
-            var pixelData = writer.Write (code);
-            var bitmap = new System.Drawing.Bitmap (pixelData.Width, pixelData.Height, System.Drawing.Imaging.PixelFormat.Format32bppRgb);
-            var ms = new MemoryStream ();
-            var bitmapData = bitmap.LockBits (new System.Drawing.Rectangle (0, 0, pixelData.Width, pixelData.Height), System.Drawing.Imaging.ImageLockMode.WriteOnly, System.Drawing.Imaging.PixelFormat.Format32bppRgb);
-            try {
-                System.Runtime.InteropServices.Marshal.Copy (pixelData.Pixels, 0, bitmapData.Scan0, pixelData.Pixels.Length);
-            } finally {
-                bitmap.UnlockBits (bitmapData);
+            var bitmap = writer.Write (code);
+            var ms=new MemoryStream();
+            using(SKManagedWStream skStream=new SKManagedWStream(ms))
+            {
+                SKPixmap.Encode(skStream,bitmap,SKEncodedImageFormat.Jpeg,100);
+                //bitmap.Encode(skStream,SKEncodedImageFormat.Jpeg,100);
             }
-            bitmap.Save (ms, System.Drawing.Imaging.ImageFormat.Png);
             return ms;
         }
-
     }
 }
