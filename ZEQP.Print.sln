@@ -15,8 +15,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	ProjectSection(SolutionItems) = preProject
 		README.md = README.md
 		ZEQPPrint.db = ZEQPPrint.db
-		ZEQPPrint.db-shm = ZEQPPrint.db-shm
-		ZEQPPrint.db-wal = ZEQPPrint.db-wal
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZEQP.Print.Entities", "ZEQP.Print.Entities\ZEQP.Print.Entities.csproj", "{344021D3-0067-4C2F-B7C3-B24E3F29A88D}"
