@@ -16,16 +16,12 @@ namespace ZEQP.Print.Entities
     public class PrintContext : DbContext
     {
         public DbSet<Template> Templates { get; set; }
+        public DbSet<TemplateField> TemplateFields { get; set; }
         public DbSet<PrintTask> PrintTasks { get; set; }
 
         public PrintContext(DbContextOptions<PrintContext> options)
             : base(options)
         { }
-
-        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        //{
-        //    optionsBuilder.UseSqlite("Data Source=E:\\GitHub\\ZEQP.Print\\ZEQPPrint.db");
-        //}
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

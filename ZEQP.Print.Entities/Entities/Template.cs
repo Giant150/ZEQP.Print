@@ -25,6 +25,7 @@ namespace ZEQP.Print.Entities
         /// <summary>
         /// 模板路径
         /// </summary>
+        [MaxLength(1000)]
         public string Path { get; set; }
 
         /// <summary>

@@ -6,7 +6,10 @@ using System.Text;
 
 namespace ZEQP.Print.Entities
 {
-    public class PrintTask
+    /// <summary>
+    /// 模板字段
+    /// </summary>
+    public class TemplateField
     {
         /// <summary>
         /// Id
@@ -16,54 +19,57 @@ namespace ZEQP.Print.Entities
         public int Id { get; set; }
 
         /// <summary>
-        /// 打印机名称
-        /// </summary>
-        [MaxLength(100)]
-        public string PrintName { get; set; }
-
-        /// <summary>
-        /// 打印份数
-        /// </summary>
-        public int Copies { get; set; }
-
-        /// <summary>
-        /// 使用模板
+        /// 模板
         /// </summary>
         public int TemplateId { get; set; }
 
         [ForeignKey(nameof(TemplateId))]
         public Template Template { get; set; }
 
+        /// <summary>
+        /// 表名称
+        /// 为null时是主表字段
+        /// </summary>
+        [MaxLength(50)]
+        public string TableName { get; set; }
 
         /// <summary>
-        /// 打印方式
+        /// 字段名名称
         /// </summary>
-        public PrintAction Action { get; set; }
+        [Required]
+        [MaxLength(50)]
+        public string Name { get; set; }
 
         /// <summary>
-        /// 是否等待
+        /// 字段编码
         /// </summary>
-        public bool IsWait { get; set; }
+        [Required]
+        [MaxLength(50)]
+        public string Code { get; set; }
 
         /// <summary>
-        /// http请求URL数据
+        /// 字段类型
         /// </summary>
-        public string Query { get; set; }
-        
-        /// <summary>
-        /// http请求正文数据
-        /// </summary>
-        public string Body { get; set; }
+        public FieldType FieldType { get; set; }
 
         /// <summary>
-        /// 打印次数
+        /// 默认值
         /// </summary>
-        public int PrintCount { get; set; }
+        [MaxLength(500)]
+        public string DefaultValue { get; set; }
 
         /// <summary>
-        /// 任务状态
+        /// 图片类型
         /// </summary>
-        public TaskStatus Status { get; set; }
+        public ImageType? imgType { get; set; }
+        /// <summary>
+        /// 图片宽度
+        /// </summary>
+        public int ImgWidth { get; set; }
+        /// <summary>
+        /// 图片高度
+        /// </summary>
+        public int ImgHeight { get; set; }
 
         /// <summary>
         /// 创建时间
@@ -78,30 +84,28 @@ namespace ZEQP.Print.Entities
         public DateTime ModifyTime { get; set; }
     }
     /// <summary>
-    /// 任务状态
+    /// 模板字段类型
     /// </summary>
-    public enum TaskStatus
+    public enum FieldType
     { 
-        Active,
-        Printing,
-        Printed
+        /// <summary>
+        /// 文本
+        /// </summary>
+        Text,
+        /// <summary>
+        /// 图片
+        /// </summary>
+        Image
     }
-    /// <summary>
-    /// 打印方式
-    /// </summary>
-    public enum PrintAction
+    public enum ImageType
     {
         /// <summary>
-        /// 打印
+        /// 条形码
         /// </summary>
-        Print = 0,
+        BarCode,
         /// <summary>
-        /// 输出成文件
+        /// 二维码
         /// </summary>
-        File = 1,
-        /// <summary>
-        /// 打印并输出成文件
-        /// </summary>
-        PrintAndFile = 2
+        QRCode
     }
 }
