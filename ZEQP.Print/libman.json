@@ -13,6 +13,25 @@
     {
       "library": "vue@2.6.10",
       "destination": "wwwroot/lib/vue/"
+    },
+    {
+      "library": "moment.js@2.24.0",
+      "destination": "wwwroot/lib/moment/",
+      "files": [
+        "moment.min.js",
+        "moment-with-locales.js",
+        "moment-with-locales.min.js",
+        "moment.js",
+        "locale/zh-cn.js"
+      ]
+    },
+    {
+      "library": "axios@0.19.1",
+      "destination": "wwwroot/lib/axios/"
+    },
+    {
+      "library": "layer@2.3",
+      "destination": "wwwroot/lib/layer/"
     }
   ]
 }
