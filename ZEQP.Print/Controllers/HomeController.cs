@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using ZEQP.Print.Entities;
 using ZEQP.Print.Models;
 
 namespace ZEQP.Print.Controllers
@@ -12,14 +13,16 @@ namespace ZEQP.Print.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
+        public PrintContext DbContext { get; set; }
+        public HomeController(ILogger<HomeController> logger, PrintContext dbContext)
         {
             _logger = logger;
+            this.DbContext = dbContext;
         }
 
         public IActionResult Index()
         {
+            var list = this.DbContext.Templates.ToList();
             return View();
         }
 

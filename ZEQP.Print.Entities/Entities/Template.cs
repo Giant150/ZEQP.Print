@@ -12,6 +12,7 @@ namespace ZEQP.Print.Entities
         /// Id
         /// </summary>
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
         /// <summary>
@@ -26,6 +27,10 @@ namespace ZEQP.Print.Entities
         /// </summary>
         public string Path { get; set; }
 
+        /// <summary>
+        /// 保存打印文件
+        /// </summary>
+        public bool SaveToFile { get; set; }
         /// <summary>
         /// 打印次数
         /// </summary>

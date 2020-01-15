@@ -6,12 +6,13 @@ using System.Text;
 
 namespace ZEQP.Print.Entities
 {
-    public class History
+    public class PrintTask
     {
         /// <summary>
         /// Id
         /// </summary>
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
         /// <summary>
@@ -36,7 +37,7 @@ namespace ZEQP.Print.Entities
         /// <summary>
         /// 打印方式
         /// </summary>
-        public int Action { get; set; }
+        public PrintAction Action { get; set; }
 
         /// <summary>
         /// 是否等待
@@ -54,6 +55,16 @@ namespace ZEQP.Print.Entities
         public string Body { get; set; }
 
         /// <summary>
+        /// 打印次数
+        /// </summary>
+        public int PrintCount { get; set; }
+
+        /// <summary>
+        /// 任务状态
+        /// </summary>
+        public TaskStatus Status { get; set; }
+
+        /// <summary>
         /// 创建时间
         /// </summary>
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -64,5 +75,32 @@ namespace ZEQP.Print.Entities
         /// </summary>
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime ModifyTime { get; set; }
+    }
+    /// <summary>
+    /// 任务状态
+    /// </summary>
+    public enum TaskStatus
+    { 
+        Active,
+        Printing,
+        Printed
+    }
+    /// <summary>
+    /// 打印方式
+    /// </summary>
+    public enum PrintAction
+    {
+        /// <summary>
+        /// 打印
+        /// </summary>
+        Print = 0,
+        /// <summary>
+        /// 输出成文件
+        /// </summary>
+        File = 1,
+        /// <summary>
+        /// 打印并输出成文件
+        /// </summary>
+        PrintAndFile = 2
     }
 }
