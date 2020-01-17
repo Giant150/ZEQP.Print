@@ -16,6 +16,10 @@ namespace ZEQP.Print.Business
         {
             this.DBContext = context;
         }
+        public Task<Template> Get(int id)
+        {
+            return this.DBContext.Templates.SingleAsync(w => w.Id == id);
+        }
         public async Task<PageResult<Template>> GetPage(PageQuery<TemplateQueryModel> model)
         {
             var queryable = this.DBContext.Templates.AsNoTracking();
@@ -44,8 +48,8 @@ namespace ZEQP.Print.Business
             }
             else
             {
-                model.ModifyTime = DateTime.Now;
                 var entry = this.DBContext.Templates.Attach(model);
+                entry.Property(w => w.ModifyTime).CurrentValue = DateTime.Now;
                 entry.State = EntityState.Modified;
                 result.Data = entry.Entity;
             }

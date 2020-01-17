@@ -12,5 +12,10 @@ namespace ZEQP.Print.Controllers
         {
             return View();
         }
+        public IActionResult Modify(int id)
+        {
+            ViewBag.Id = id;
+            return View();
+        }
     }
 }

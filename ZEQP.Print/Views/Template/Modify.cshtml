@@ -1,0 +1,87 @@
+﻿
+@{
+    ViewData["Title"] = "Modify";
+    Layout = "~/Views/Shared/_LayoutContent.cshtml";
+}
+
+    <form id="mainApp">
+        <input type="hidden" v-model="Model.Id" />
+        <div class="form-group row">
+            <label for="txtName" class="col-sm-2 col-md-2 col-form-label">模板名称</label>
+            <div class="col-sm-10 col-md-10">
+                <input type="text" class="form-control" id="txtName" v-model="Model.Name">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="txtCode" class="col-sm-2 col-md-2 col-form-label">模板编码</label>
+            <div class="col-sm-10 col-md-10">
+                <input type="text" class="form-control" id="txtCode" v-model="Model.Code">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="txtVerstion" class="col-sm-2 col-md-2 col-form-label">模板版本</label>
+            <div class="col-sm-10 col-md-10">
+                <input type="text" class="form-control" id="txtVerstion" v-model="Model.Verstion">
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="form-check col-sm-10 col-md-10 offset-2">
+                <input class="form-check-input" type="checkbox" id="ckbSaveToFile" v-model="Model.SaveToFile">
+                <label class="form-check-label" for="ckbSaveToFile">保存打印历史</label>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="txtVerstion" class="col-sm-2 col-md-2 col-form-label">状态</label>
+            <div class="col-sm-10 col-md-10">
+                <select class="form-control" v-model="Model.Status">
+                    <option value="1">启用</option>
+                    <option value="2">禁用</option>
+                </select>
+            </div>
+        </div>
+        <button type="button" class="btn btn-primary" v-on:click="submit()">保存</button>
+    </form>
+@section Scripts{
+    <script>
+        var mainApp = new Vue({
+            el: "#mainApp",
+            data: {
+                Model: {},
+                Config: { WindowHeight: window.innerHeight, TotalRows: 0 }
+            },
+            mounted: function () {
+                var id = parseInt("@ViewBag.Id");
+                axios.get("/api/Template/Get/" + id)
+                    .then(function (response) {
+                        var result = response.data;
+                        this.Model = result;
+                    }.bind(this))
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+            },
+            computed: { },
+            filters: {
+                date: function (value) {
+                    return moment(value).format("YYYY-MM-DD");
+                },
+                datetime: function (value) {
+                    return moment(value).format("YYYY-MM-DD HH:mm:ss");
+                }
+            },
+            methods: {
+                submit: function () {
+                    axios.post("/api/Template/Modify", this.Model)
+                        .then(function (response) {
+                            var result = response.data;
+                            this.Model = result.Data;
+                            layer.alert(result.Msg);
+                        }.bind(this))
+                        .catch(function (error) {
+                            console.log(error);
+                        });
+                }
+            }
+        });
+    </script>
+}

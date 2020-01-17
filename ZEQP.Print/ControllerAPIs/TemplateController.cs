@@ -20,6 +20,12 @@ namespace ZEQP.Print.ControllerAPIs
             this.TempSvc = tempSvc;
         }
 
+        [HttpGet("[action]/{id}")]
+        public Task<Template> Get(int id)
+        {
+            return this.TempSvc.Get(id);
+        }
+
         [HttpPost("[action]")]
         public Task<PageResult<Template>> GetPage(PageQuery<TemplateQueryModel> model)
         {

@@ -10,19 +10,20 @@
                 <form class="form-inline">
                     <div class="input-group">
                         <div class="input-group-prepend">
-                            <span class="input-group-text">打印时间:</span>
+                            <span class="input-group-text">名称/编码:</span>
                         </div>
-                        <input type="date" class="form-control" placeholder="开始时间" v-model="PageQuery.Query.DateBegin">
-                        <div class="input-group-addon">
-                            <span class="input-group-text">-</span>
-                        </div>
-                        <input type="date" class="form-control" placeholder="结束时间" v-model="PageQuery.Query.DateEnd">
+                        <input type="text" class="form-control" placeholder="模板名称/编码" v-model="PageQuery.Match">
                     </div>
                     <div class="input-group ml-2">
                         <div class="input-group-prepend">
-                            <span class="input-group-text">二维码/订单号/卷号:</span>
+                            <span class="input-group-text">状态:</span>
                         </div>
-                        <input type="text" class="form-control" placeholder="二维码/订单号/卷号" v-model="PageQuery.Match">
+                        <input type="text" class="form-control" placeholder="模板名称/编码" v-model="PageQuery.Match">
+                        <select class="form-control" v-model="PageQuery.Query.Status">
+                            <option value="">所有</option>
+                            <option value="Enable">启用</option>
+                            <option value="Disable">禁用</option>
+                        </select>
                     </div>
                     <button type="button" class="btn btn-primary ml-2" v-on:click="getListData">查询</button>
                 </form>
@@ -31,30 +32,31 @@
         <table class="table table-striped table-bordered table-hover">
             <thead>
                 <tr>
-                    <td>二维码</td>
-                    <td>产品品名</td>
-                    <td>产品代码</td>
-                    <td>卷号</td>
-                    <td>生产线</td>
-                    <td>生产版本</td>
-                    <td>类型</td>
-                    <td>打印时间</td>
-                    <td>订单号</td>
-                    <td>备注</td>
+                    <td>名称</td>
+                    <td>编码</td>
+                    <td>版本</td>
+                    <td>保存文件?</td>
+                    <td>打印次数</td>
+                    <td>状态</td>
+                    <td>创建时间</td>
+                    <td>修改时间</td>
+                    <td>操作</td>
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="item in ListData" v-bind:key="item.Id" v-on:dblclick="ShowPrint(item)">
+                <tr v-for="item in ListData" v-bind:key="item.Id">
+                    <td>{{item.Name}}</td>
                     <td>{{item.Code}}</td>
-                    <td>{{item | productName}}</td>
-                    <td>{{item | productCode}}</td>
-                    <td>{{item.RollNo}}</td>
-                    <td>{{item.Pro_line}}</td>
-                    <td>{{item.CLASS}}</td>
-                    <td>{{item | productClass}}</td>
-                    <td>{{item.Date | datetime}}</td>
-                    <td>{{item.WMS_order}}</td>
-                    <td>{{item.Remark}}</td>
+                    <td>{{item.Verstion}}</td>
+                    <td>{{item.SaveToFile}}</td>
+                    <td>{{item.PrintCount}}</td>
+                    <td>{{item.Status}}</td>
+                    <td>{{item.CreateTime | datetime}}</td>
+                    <td>{{item.ModifyTime | datetime}}</td>
+                    <td>
+                        <a href="javascript:;" v-on:click="showModify(item)">修改</a>
+                        <a :href="item.Path" target="_blank" class="ml-1">下载</a>
+                    </td>
                 </tr>
             </tbody>
         </table>
@@ -78,7 +80,7 @@
             data: {
                 Config: { WindowHeight: window.innerHeight, TotalRows: 0 },
                 PageQuery: {
-                    Size: 10, Page: 1, Order: "Date", Sort: "DESC", Match: "", Query: { DateBegin: moment(new Date()).format("YYYY-MM-DD"), DateEnd: null }
+                    Size: 10, Page: 1, Order: "ModifyTime", Sort: "DESC", Match: "", Query: { Status: null }
                 },
                 ListData: []
             },
@@ -97,7 +99,7 @@
                         : this.Config.TotalRows / this.PageQuery.Size;
                 },
                 tableHeight: function () {
-                    return this.Config.WindowHeight - 220;
+                    return this.Config.WindowHeight - 260;
                 }
             },
             filters: {
@@ -106,20 +108,11 @@
                 },
                 datetime: function (value) {
                     return moment(value).format("YYYY-MM-DD HH:mm:ss");
-                },
-                productName: function (value) {
-                    return value.ProductName1 + "-" + value.ProductName2 + "-" + value.ProductName3;
-                },
-                productCode: function (value) {
-                    return value.ProductCode1 + "-" + value.ProductCode2;
-                },
-                productClass: function (value) {
-                    return [value.Classification1, value.Classification2, value.Classification3].join(" ").trim();
                 }
             },
             methods: {
                 getListData: function () {
-                    axios.post("/api/Product/GetRePrintPage", this.PageQuery)
+                    axios.post("/api/Template/GetPage", this.PageQuery)
                         .then(function (response) {
                             var result = response.data;
                             this.ListData = result.Data;
@@ -142,8 +135,14 @@
                     if (index > totalPages) this.PageQuery.Page = totalPages;
                     this.getListData();
                 },
-                ShowPrint: function (item) {
-                    window.ShowMainModal({ title: "打印", src: "/RePrint/Print/" + item.Id, width: "820px", height: "620px" });
+                showModify(item) {
+                    layer.open({
+                        type: 2,
+                        title: '编辑',
+                        shadeClose: true,
+                        area: ['600px', '400px'],
+                        content: '/Template/Modify/' + item.Id
+                    });
                 }
             }
         });
