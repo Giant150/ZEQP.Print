@@ -28,6 +28,9 @@ namespace ZEQP.Print
         {
             var connectionString = this.Configuration.GetConnectionString("Default");
             services.AddDbContext<PrintContext>(options => options.UseSqlite(connectionString));
+
+            services.AddScoped<ITemplateService, TemplateService>();
+
             services.AddScoped<IPrintModelService, PrintModelService>();
             services.AddScoped<IPrintFieldMergingCallback, PrintFieldMergingCallback>();
             services.AddSingleton<IMergeDocService, MergeDocService>();

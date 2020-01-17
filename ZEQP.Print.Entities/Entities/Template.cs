@@ -16,11 +16,24 @@ namespace ZEQP.Print.Entities
         public int Id { get; set; }
 
         /// <summary>
-        /// 名称
+        /// 模板名称
         /// </summary>
         [Required]
         [MaxLength(50)]
         public string Name { get; set; }
+
+        /// <summary>
+        /// 模板编码
+        /// </summary>
+        [Required]
+        [MaxLength(50)]
+        public string Code { get; set; }
+
+        /// <summary>
+        /// 模板版本
+        /// </summary>
+        [MaxLength(50)]
+        public string Verstion { get; set; }
 
         /// <summary>
         /// 模板路径
@@ -37,6 +50,8 @@ namespace ZEQP.Print.Entities
         /// </summary>
         public int PrintCount { get; set; }
 
+        public TemplateStatus Status { get; set; }
+
         /// <summary>
         /// 创建时间
         /// </summary>
@@ -48,5 +63,19 @@ namespace ZEQP.Print.Entities
         /// </summary>
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime ModifyTime { get; set; }
+    }
+    /// <summary>
+    /// 模板状态
+    /// </summary>
+    public enum TemplateStatus
+    {
+        /// <summary>
+        /// 启用
+        /// </summary>
+        Enable = 1,
+        /// <summary>
+        /// 停用
+        /// </summary>
+        Disable = 2
     }
 }

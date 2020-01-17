@@ -87,25 +87,25 @@ namespace ZEQP.Print.Entities
     /// 模板字段类型
     /// </summary>
     public enum FieldType
-    { 
+    {
         /// <summary>
         /// 文本
         /// </summary>
-        Text,
+        Text = 1,
         /// <summary>
         /// 图片
         /// </summary>
-        Image
+        Image = 2
     }
     public enum ImageType
     {
         /// <summary>
         /// 条形码
         /// </summary>
-        BarCode,
+        BarCode = 1,
         /// <summary>
         /// 二维码
         /// </summary>
-        QRCode
+        QRCode = 2
     }
 }

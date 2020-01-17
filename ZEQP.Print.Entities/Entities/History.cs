@@ -81,10 +81,19 @@ namespace ZEQP.Print.Entities
     /// 任务状态
     /// </summary>
     public enum TaskStatus
-    { 
-        Active,
-        Printing,
-        Printed
+    {
+        /// <summary>
+        /// 已生成
+        /// </summary>
+        Active = 1,
+        /// <summary>
+        /// 打印中
+        /// </summary>
+        Printing = 2,
+        /// <summary>
+        /// 打印完成
+        /// </summary>
+        Printed = 3
     }
     /// <summary>
     /// 打印方式
@@ -94,14 +103,14 @@ namespace ZEQP.Print.Entities
         /// <summary>
         /// 打印
         /// </summary>
-        Print = 0,
+        Print = 1,
         /// <summary>
         /// 输出成文件
         /// </summary>
-        File = 1,
+        File = 2,
         /// <summary>
         /// 打印并输出成文件
         /// </summary>
-        PrintAndFile = 2
+        PrintAndFile = 3
     }
 }
