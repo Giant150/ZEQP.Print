@@ -26,6 +26,7 @@
                         </select>
                     </div>
                     <button type="button" class="btn btn-primary ml-2" v-on:click="getListData">查询</button>
+                    <button type="button" class="btn btn-success ml-2" v-on:click="showModify(0)">新增</button>
                 </form>
             </div>
         </div>
@@ -54,7 +55,7 @@
                     <td>{{item.CreateTime | datetime}}</td>
                     <td>{{item.ModifyTime | datetime}}</td>
                     <td>
-                        <a href="javascript:;" v-on:click="showModify(item)">修改</a>
+                        <a href="javascript:;" v-on:click="showModify(item.Id)">修改</a>
                         <a :href="item.Path" target="_blank" class="ml-1">下载</a>
                     </td>
                 </tr>
@@ -135,13 +136,13 @@
                     if (index > totalPages) this.PageQuery.Page = totalPages;
                     this.getListData();
                 },
-                showModify(item) {
+                showModify(id) {
                     layer.open({
                         type: 2,
                         title: '编辑',
                         shadeClose: true,
                         area: ['600px', '400px'],
-                        content: '/Template/Modify/' + item.Id
+                        content: '/Template/Modify/' + id
                     });
                 }
             }
