@@ -37,8 +37,7 @@ namespace ZEQP.Print.Business
             var result = new ComResult<Template>();
             if (model.Id == default(int))
             {
-                model.CreateTime = DateTime.Now;
-                model.ModifyTime = DateTime.Now;
+                model.CreateTime = model.ModifyTime = DateTime.Now;
                 model.PrintCount = 0;
                 var entity = await this.DBContext.Templates.AddAsync(model);
                 result.Data = entity.Entity;

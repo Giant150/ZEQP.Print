@@ -11,8 +11,6 @@ namespace ZEQP.Print.Entities
         /// <summary>
         /// Id
         /// </summary>
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
         /// <summary>
@@ -68,13 +66,11 @@ namespace ZEQP.Print.Entities
         /// <summary>
         /// 创建时间
         /// </summary>
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public DateTime CreateTime { get; set; }
 
         /// <summary>
         /// 最后修改时间
         /// </summary>
-        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime ModifyTime { get; set; }
     }
     /// <summary>
