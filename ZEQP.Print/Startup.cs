@@ -30,6 +30,7 @@ namespace ZEQP.Print
             services.AddDbContext<PrintContext>(options => options.UseSqlite(connectionString));
 
             services.AddScoped<ITemplateService, TemplateService>();
+            services.AddScoped<ITemplateFieldService, TemplateFieldService>();
 
             services.AddScoped<IPrintModelService, PrintModelService>();
             services.AddScoped<IPrintFieldMergingCallback, PrintFieldMergingCallback>();
