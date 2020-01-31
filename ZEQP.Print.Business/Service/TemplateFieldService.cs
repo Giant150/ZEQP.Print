@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
@@ -15,11 +16,10 @@ namespace ZEQP.Print.Business {
             return this.DBContext.TemplateFields.SingleOrDefaultAsync (w => w.Id == Id);
         }
 
-        public async Task<ILookup<string, TemplateField>> GetFields (int tempId) {
-            var list = await this.DBContext.TemplateFields.AsNoTracking ()
+        public Task<List<TemplateField>> GetFields (int tempId) {
+            return this.DBContext.TemplateFields.AsNoTracking ()
                 .Where (w => w.TemplateId == tempId)
                 .ToListAsync ();
-            return list.ToLookup (keySelector => keySelector.TableName);
         }
 
         public async Task<ComResult<TemplateField>> Modify (TemplateField model) {

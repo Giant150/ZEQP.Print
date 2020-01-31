@@ -27,7 +27,7 @@ namespace ZEQP.Print.ControllerAPIs {
         }
 
         [HttpGet ("[action]/{templateId}")]
-        public Task<ILookup<string, TemplateField>> GetFields (int templateId) {
+        public Task<List<TemplateField>> GetFields (int templateId) {
             return this.FieldSvc.GetFields (templateId);
         }
 
