@@ -8,9 +8,9 @@ namespace ZEQP.Print.Controllers
 {
     public class FieldController : Controller
     {
-        public IActionResult Index(int tempId)
+        public IActionResult Index(int id)
         {
-            ViewBag.TemplateId = tempId;
+            ViewBag.TemplateId = id;
             return View();
         }
     }

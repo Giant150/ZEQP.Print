@@ -3,7 +3,7 @@
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_LayoutContent.cshtml";
 }
-
+<div id="mainApp">
 <ul class="nav nav-tabs" id="myTab" role="tablist">
     <li class="nav-item">
         <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Home</a>
@@ -20,3 +20,31 @@
     <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">Profile</div>
     <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">Contact</div>
 </div>
+</div>
+@section Scripts{
+    <script>
+        var mainApp = new Vue({
+            el:"#mainApp",
+            data:{
+                Config:{TemplateId:"@ViewBag.TemplateId", CurTable:"Main"},
+                TableNames:["Main"],
+                ListData:[]
+            },
+            filters:{},
+            mounted: function () {
+                this.getFields();qxsdwfssgsgggs        
+            },
+            methods:{
+                getFields(){
+                    axios.get("/api/TemplateField/GetFields/" + this.Config.TemplateId)
+                        .then(function (response) {
+                            this.ListData = response.data;
+                        }.bind(this))
+                        .catch(function (error) {
+                            console.log(error);
+                        });
+                }
+            }
+        });
+    </script>
+}

@@ -55,6 +55,7 @@
                     <td>{{item.ModifyTime | datetime}}</td>
                     <td>
                         <a href="javascript:;" v-on:click="showModify(item.Id)">修改</a>
+                        <a href="javascript:;" v-on:click="showField(item.Id)">字段</a>
                         <a :href="item.Path" target="_blank" class="ml-1">下载</a>
                     </td>
                 </tr>
@@ -142,6 +143,15 @@
                         shadeClose: true,
                         area: ['600px', '450px'],
                         content: '/Template/Modify/' + id
+                    });
+                },
+                showField(id){
+                    layer.open({
+                        type: 2,
+                        title: '字段管理',
+                        shadeClose: true,
+                        area: ['800px', '600px'],
+                        content: '/Field/Index/' + id
                     });
                 }
             }
